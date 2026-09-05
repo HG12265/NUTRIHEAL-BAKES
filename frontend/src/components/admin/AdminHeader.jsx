@@ -6,7 +6,9 @@ import {
   Bell,
   Volume2,
   VolumeX,
+  Check,
   CheckCheck,
+  Trash2,
   ShoppingBag,
   ArrowRight,
   Clock,
@@ -35,6 +37,8 @@ const AdminHeader = ({ title, onToggleSidebar }) => {
     toggleSound,
     markAsRead,
     markAllAsRead,
+    deleteNotification,
+    clearAllNotifications,
   } = useAdminNotification();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -235,6 +239,7 @@ const AdminHeader = ({ title, onToggleSidebar }) => {
                   {unreadCount > 0 && (
                     <button
                       onClick={markAllAsRead}
+                      title="Mark all notifications as read"
                       style={{
                         background: 'none',
                         border: 'none',
@@ -243,13 +248,38 @@ const AdminHeader = ({ title, onToggleSidebar }) => {
                         fontWeight: 700,
                         cursor: 'pointer',
                         padding: '4px 6px',
+                        borderRadius: '4px',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '4px',
+                        gap: '3px',
                       }}
                     >
                       <CheckCheck size={14} />
-                      <span>Mark all read</span>
+                      <span>Read all</span>
+                    </button>
+                  )}
+
+                  {/* Clear all notifications */}
+                  {notifications && notifications.length > 0 && (
+                    <button
+                      onClick={clearAllNotifications}
+                      title="Clear and delete all notifications"
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: '#E53935',
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        padding: '4px 6px',
+                        borderRadius: '4px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '3px',
+                      }}
+                    >
+                      <Trash2 size={13} />
+                      <span>Clear</span>
                     </button>
                   )}
                 </div>
@@ -368,7 +398,7 @@ const AdminHeader = ({ title, onToggleSidebar }) => {
                               fontSize: '0.8rem',
                               color: 'var(--text-muted)',
                               lineHeight: 1.3,
-                              marginBottom: '4px',
+                              marginBottom: '6px',
                             }}
                           >
                             {n.message || 'New order placed'}
@@ -378,19 +408,106 @@ const AdminHeader = ({ title, onToggleSidebar }) => {
                             style={{
                               display: 'flex',
                               alignItems: 'center',
+                              justifyContent: 'space-between',
                               gap: '4px',
-                              fontSize: '0.72rem',
-                              color: 'var(--text-muted)',
                             }}
                           >
-                            <Clock size={12} />
-                            <span>{formatTimeAgo(n.createdAt)}</span>
-                            {items != null && (
-                              <>
-                                <span>•</span>
-                                <span>{items} {items === 1 ? 'item' : 'items'}</span>
-                              </>
-                            )}
+                            <div
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                fontSize: '0.72rem',
+                                color: 'var(--text-muted)',
+                              }}
+                            >
+                              <Clock size={12} />
+                              <span>{formatTimeAgo(n.createdAt)}</span>
+                              {items != null && (
+                                <>
+                                  <span>•</span>
+                                  <span>{items} {items === 1 ? 'item' : 'items'}</span>
+                                </>
+                              )}
+                            </div>
+
+                            {/* Row Action Buttons: Mark as Read & Delete */}
+                            <div
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                              }}
+                            >
+                              {!n.isRead && (
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    markAsRead(n._id);
+                                  }}
+                                  title="Mark as read"
+                                  style={{
+                                    background: 'none',
+                                    border: '1px solid rgba(78, 140, 93, 0.3)',
+                                    color: 'var(--primary)',
+                                    cursor: 'pointer',
+                                    padding: '3px 7px',
+                                    borderRadius: '5px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '3px',
+                                    fontSize: '0.7rem',
+                                    fontWeight: 700,
+                                    backgroundColor: 'rgba(78, 140, 93, 0.08)',
+                                    transition: 'all 0.15s ease',
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.backgroundColor = 'var(--primary)';
+                                    e.currentTarget.style.color = '#FFFFFF';
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.backgroundColor = 'rgba(78, 140, 93, 0.08)';
+                                    e.currentTarget.style.color = 'var(--primary)';
+                                  }}
+                                >
+                                  <Check size={12} />
+                                  <span>Read</span>
+                                </button>
+                              )}
+
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  deleteNotification(n._id);
+                                }}
+                                title="Delete notification"
+                                style={{
+                                  background: 'none',
+                                  border: '1px solid #EAEAEA',
+                                  color: '#8E8E8E',
+                                  cursor: 'pointer',
+                                  padding: '3px 6px',
+                                  borderRadius: '5px',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  fontSize: '0.7rem',
+                                  transition: 'all 0.15s ease',
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.backgroundColor = '#FFEBEE';
+                                  e.currentTarget.style.borderColor = '#FFCDD2';
+                                  e.currentTarget.style.color = '#E53935';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.backgroundColor = 'transparent';
+                                  e.currentTarget.style.borderColor = '#EAEAEA';
+                                  e.currentTarget.style.color = '#8E8E8E';
+                                }}
+                              >
+                                <Trash2 size={12} />
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>

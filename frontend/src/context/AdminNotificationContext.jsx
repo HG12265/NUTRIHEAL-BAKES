@@ -141,6 +141,34 @@ export const AdminNotificationProvider = ({ children }) => {
     }
   }, []);
 
+  // Delete single notification
+  const deleteNotification = useCallback(async (id) => {
+    try {
+      const res = await api.delete(`/admin/notifications/${id}`);
+      if (res.data.success) {
+        setNotifications((prev) => prev.filter((n) => n._id !== id));
+        if (res.data.unreadCount != null) {
+          setUnreadCount(res.data.unreadCount);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to delete notification:', err);
+    }
+  }, []);
+
+  // Clear all notifications
+  const clearAllNotifications = useCallback(async () => {
+    try {
+      const res = await api.delete('/admin/notifications');
+      if (res.data.success) {
+        setNotifications([]);
+        setUnreadCount(0);
+      }
+    } catch (err) {
+      console.error('Failed to clear notifications:', err);
+    }
+  }, []);
+
   const dismissToast = useCallback(() => {
     setActiveToast(null);
   }, []);
@@ -211,6 +239,8 @@ export const AdminNotificationProvider = ({ children }) => {
     dismissToast,
     markAsRead,
     markAllAsRead,
+    deleteNotification,
+    clearAllNotifications,
     refreshNotifications: fetchNotifications,
     refreshTrigger,
     playChime,

@@ -18,6 +18,8 @@ router.get('/notifications/stream', notificationController.streamNotifications);
 router.get('/notifications', notificationController.getNotifications);
 router.put('/notifications/:id/read', notificationController.markAsRead);
 router.put('/notifications/read-all', notificationController.markAllAsRead);
+router.delete('/notifications/:id', notificationController.deleteNotification);
+router.delete('/notifications', notificationController.clearAllNotifications);
 
 module.exports = router;
 

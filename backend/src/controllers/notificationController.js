@@ -81,6 +81,52 @@ exports.markAllAsRead = async (req, res, next) => {
   }
 };
 
+// @desc    Delete a single notification
+// @route   DELETE /api/admin/notifications/:id
+// @access  Private/Admin
+exports.deleteNotification = async (req, res, next) => {
+  try {
+    const notification = await Notification.findByIdAndDelete(req.params.id);
+
+    if (!notification) {
+      return res.status(404).json({
+        success: false,
+        message: 'Notification not found',
+      });
+    }
+
+    const unreadCount = await Notification.countDocuments({
+      recipientRole: 'admin',
+      isRead: false,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Notification deleted successfully',
+      unreadCount,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Delete all admin notifications
+// @route   DELETE /api/admin/notifications
+// @access  Private/Admin
+exports.clearAllNotifications = async (req, res, next) => {
+  try {
+    await Notification.deleteMany({ recipientRole: 'admin' });
+
+    return res.status(200).json({
+      success: true,
+      message: 'All notifications cleared successfully',
+      unreadCount: 0,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // @desc    Stream real-time notifications via SSE
 // @route   GET /api/admin/notifications/stream
 // @access  Private/Admin (or via query token)
