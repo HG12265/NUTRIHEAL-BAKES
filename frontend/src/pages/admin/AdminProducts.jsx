@@ -16,6 +16,7 @@ import api from '../../services/api';
 import { useToast } from '../../context/ToastContext';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import ConfirmDialog from '../../components/common/ConfirmDialog';
+import { getProductImageUrl } from '../../utils/imageUrl';
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
@@ -160,11 +161,7 @@ const AdminProducts = () => {
               </thead>
               <tbody>
                 {filteredProducts.map((p) => {
-                  const imageUrl = p.image?.startsWith('http')
-                    ? p.image
-                    : p.image?.startsWith('/')
-                    ? `http://localhost:5000${p.image}`
-                    : 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80';
+                  const imageUrl = getProductImageUrl(p.image);
 
                   return (
                     <tr key={p._id}>
@@ -174,6 +171,10 @@ const AdminProducts = () => {
                           <img
                             src={imageUrl}
                             alt={p.name}
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80';
+                            }}
                             style={{
                               width: '44px',
                               height: '44px',

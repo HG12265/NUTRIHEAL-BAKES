@@ -223,7 +223,7 @@ const AdminQRCodes = () => {
                         </button>
 
                         <a
-                          href={`http://localhost:5000/api/products/${p._id}/qr/download`}
+                          href={p.qrCodeDataUrl || `${api.defaults.baseURL || '/api'}/products/${p._id}/qr/download`}
                           download={`${p.slug || 'product'}-qr.png`}
                           className="btn btn-primary btn-sm"
                           style={{ padding: '6px 10px', fontSize: '0.8rem' }}

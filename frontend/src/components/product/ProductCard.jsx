@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, Eye, QrCode } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
+import { getProductImageUrl } from '../../utils/imageUrl';
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
@@ -14,12 +15,8 @@ const ProductCard = ({ product }) => {
     }
   };
 
-  // Fallback image handling
-  const imageUrl = product.image?.startsWith('http')
-    ? product.image
-    : product.image?.startsWith('/')
-    ? `http://localhost:5000${product.image}`
-    : 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80';
+  // Image handling
+  const imageUrl = getProductImageUrl(product.image);
 
   return (
     <div

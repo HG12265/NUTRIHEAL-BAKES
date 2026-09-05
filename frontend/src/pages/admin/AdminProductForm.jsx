@@ -13,6 +13,7 @@ import {
 import api from '../../services/api';
 import { useToast } from '../../context/ToastContext';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
+import { getProductImageUrl } from '../../utils/imageUrl';
 
 const categories = ['Cookies', 'Bread', 'Cakes', 'Desserts'];
 
@@ -132,7 +133,9 @@ const AdminProductForm = () => {
               qrCodeUrl: p.qrCodeUrl || '',
               qrCodeDataUrl: p.qrCodeDataUrl || '',
             });
-            setImagePreview(p.image || '');
+            if (p.image) {
+              setImagePreview(getProductImageUrl(p.image));
+            }
           }
         } catch (err) {
           setError('Failed to load product details');
@@ -388,24 +391,65 @@ const AdminProductForm = () => {
               />
             </div>
 
-            <div className="form-group">
-              <label className="form-label">Product Image File or URL</label>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  style={{ display: 'none' }}
-                  id="product-image-upload"
-                />
-                <label htmlFor="product-image-upload" className="btn btn-outline btn-sm" style={{ cursor: 'pointer' }}>
-                  <Upload size={16} /> Choose File
-                </label>
+            <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+              <label className="form-label">Product Photo (Upload File or Enter Image URL)</label>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center' }}>
                 {imagePreview && (
-                  <span style={{ fontSize: '0.8rem', color: 'var(--success)', alignSelf: 'center' }}>
-                    ✓ Image selected
-                  </span>
+                  <div
+                    style={{
+                      width: '64px',
+                      height: '64px',
+                      borderRadius: '8px',
+                      overflow: 'hidden',
+                      border: '2px solid var(--primary-light)',
+                      backgroundColor: '#F5EFE0',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80';
+                      }}
+                    />
+                  </div>
                 )}
+
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    style={{ display: 'none' }}
+                    id="product-image-upload"
+                  />
+                  <label htmlFor="product-image-upload" className="btn btn-outline btn-sm" style={{ cursor: 'pointer' }}>
+                    <Upload size={16} /> Choose Image File
+                  </label>
+                  {imageFile && (
+                    <span style={{ fontSize: '0.85rem', color: 'var(--success)', fontWeight: 600 }}>
+                      ✓ {imageFile.name}
+                    </span>
+                  )}
+                </div>
+
+                <div style={{ flex: '1 1 240px' }}>
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={formData.image}
+                    onChange={(e) => {
+                      setFormData({ ...formData, image: e.target.value });
+                      if (!imageFile && e.target.value) {
+                        setImagePreview(e.target.value);
+                      }
+                    }}
+                    placeholder="Or paste image URL (e.g. https://...)"
+                  />
+                </div>
               </div>
             </div>
           </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, Plus, Minus, ArrowRight, ShoppingBag, ShieldCheck } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { getProductImageUrl } from '../utils/imageUrl';
 
 const Cart = () => {
   const {
@@ -70,11 +71,7 @@ const Cart = () => {
         {/* Left: Cart Items List */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {items.map((item) => {
-            const imageUrl = item.image?.startsWith('http')
-              ? item.image
-              : item.image?.startsWith('/')
-              ? `http://localhost:5000${item.image}`
-              : 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80';
+            const imageUrl = getProductImageUrl(item.image);
 
             return (
               <div

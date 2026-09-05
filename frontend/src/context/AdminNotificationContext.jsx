@@ -184,7 +184,7 @@ export const AdminNotificationProvider = ({ children }) => {
     // Connect to Server-Sent Events stream
     if (authToken && typeof EventSource !== 'undefined') {
       try {
-        const streamUrl = `${api.defaults.baseURL || 'http://localhost:5000/api'}/admin/notifications/stream?token=${authToken}`;
+        const streamUrl = `${api.defaults.baseURL || 'https://nutriheal-bakes.onrender.com/api'}/admin/notifications/stream?token=${authToken}`;
         const es = new EventSource(streamUrl);
 
         es.onmessage = (event) => {

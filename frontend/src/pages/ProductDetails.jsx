@@ -18,6 +18,7 @@ import {
 import api from '../services/api';
 import { useCart } from '../context/CartContext';
 import { LoadingSpinner } from '../components/common/LoadingSpinner';
+import { getProductImageUrl } from '../utils/imageUrl';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -86,11 +87,7 @@ const ProductDetails = () => {
     );
   }
 
-  const imageUrl = product.image?.startsWith('http')
-    ? product.image
-    : product.image?.startsWith('/')
-    ? `http://localhost:5000${product.image}`
-    : 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80';
+  const imageUrl = getProductImageUrl(product.image);
 
   const handleAddToCart = () => {
     if (product.availability) {
