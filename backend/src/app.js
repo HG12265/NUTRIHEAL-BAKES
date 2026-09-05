@@ -17,18 +17,20 @@ app.use(express.urlencoded({ extended: true }));
 
 // Enable CORS
 const allowedOrigins = [
+  'https://nutriheal-bakes.vercel.app',
   process.env.CLIENT_URL || 'http://localhost:5173',
   'http://127.0.0.1:5173',
   'http://localhost:3000',
 ];
+
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps, curl, postman)
-      if (!origin || allowedOrigins.includes(origin)) {
+      // Allow requests with no origin (mobile apps, curl, postman) or matching domains
+      if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
         callback(null, true);
       } else {
-        callback(null, true); // Permissive for development convenience
+        callback(null, true);
       }
     },
     credentials: true,
