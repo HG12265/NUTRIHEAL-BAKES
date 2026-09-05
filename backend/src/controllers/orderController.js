@@ -2,6 +2,7 @@ const Order = require('../models/Order');
 const Product = require('../models/Product');
 const Notification = require('../models/Notification');
 const notificationEmitter = require('../utils/notificationEmitter');
+const emailService = require('../services/emailService');
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -99,6 +100,15 @@ exports.createOrder = async (req, res, next) => {
       notificationEmitter.emit('admin_notification', notification);
     } catch (notifErr) {
       console.error('[OrderController] Failed to dispatch admin notification:', notifErr.message);
+    }
+
+    // Send Brevo Email notification to Admin (nutrihealbakes@gmail.com)
+    try {
+      emailService.sendAdminNewOrderNotification(order).catch((err) => {
+        console.error('[EmailService] Failed to send admin email:', err.message);
+      });
+    } catch (emailErr) {
+      console.error('[EmailService] Admin email error:', emailErr.message);
     }
 
     return res.status(201).json({
@@ -215,7 +225,7 @@ exports.updateOrderStatus = async (req, res, next) => {
       });
     }
 
-    const order = await Order.findById(req.params.id);
+    const order = await Order.findById(req.params.id).populate('user', 'name email phone');
     if (!order) {
       return res.status(404).json({
         success: false,
@@ -225,6 +235,15 @@ exports.updateOrderStatus = async (req, res, next) => {
 
     order.status = status;
     await order.save();
+
+    // Send customer email update via Brevo
+    try {
+      emailService.sendCustomerOrderStatusUpdate(order, status).catch((err) => {
+        console.error('[EmailService] Failed to send customer status update email:', err.message);
+      });
+    } catch (emailErr) {
+      console.error('[EmailService] Customer email exception:', emailErr.message);
+    }
 
     return res.status(200).json({
       success: true,
