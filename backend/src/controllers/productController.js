@@ -62,7 +62,7 @@ exports.getProductById = async (req, res, next) => {
 
     // Ensure QR code is present if not already generated
     if (!product.qrCodeDataUrl) {
-      const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+      const clientUrl = process.env.CLIENT_URL || 'https://nutriheal-bakes.vercel.app';
       const targetUrl = `${clientUrl}/product/${product._id}`;
       product.qrCodeUrl = targetUrl;
       product.qrCodeDataUrl = await generateQRCodeDataUrl(targetUrl);
@@ -118,7 +118,7 @@ exports.createProduct = async (req, res, next) => {
     const product = new Product(productData);
 
     // Generate QR Code mapping to unique product URL
-    const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+    const clientUrl = process.env.CLIENT_URL || 'https://nutriheal-bakes.vercel.app';
     const targetUrl = `${clientUrl}/product/${product._id}`;
     product.qrCodeUrl = targetUrl;
     product.qrCodeDataUrl = await generateQRCodeDataUrl(targetUrl);
@@ -179,7 +179,7 @@ exports.updateProduct = async (req, res, next) => {
     }
 
     // Ensure QR Code points correctly
-    const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+    const clientUrl = process.env.CLIENT_URL || 'https://nutriheal-bakes.vercel.app';
     const targetUrl = `${clientUrl}/product/${product._id}`;
     updateData.qrCodeUrl = targetUrl;
     if (!product.qrCodeDataUrl) {
@@ -267,7 +267,7 @@ exports.generateProductQR = async (req, res, next) => {
       });
     }
 
-    const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+    const clientUrl = process.env.CLIENT_URL || 'https://nutriheal-bakes.vercel.app';
     const targetUrl = `${clientUrl}/product/${product._id}`;
 
     const qrDataUrl = await generateQRCodeDataUrl(targetUrl);
@@ -305,7 +305,7 @@ exports.downloadProductQR = async (req, res, next) => {
       });
     }
 
-    const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+    const clientUrl = process.env.CLIENT_URL || 'https://nutriheal-bakes.vercel.app';
     const targetUrl = `${clientUrl}/product/${product._id}`;
     const buffer = await generateQRCodeBuffer(targetUrl);
 

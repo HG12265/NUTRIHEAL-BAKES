@@ -354,7 +354,7 @@ const seedData = async () => {
     }
 
     // Seed Products with Dynamic QR codes
-    const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+    const clientUrl = process.env.CLIENT_URL || 'https://nutriheal-bakes.vercel.app';
     console.log(`[Seed] Generating QR codes mapping to client URL: ${clientUrl}`);
 
     for (const item of sampleProducts) {

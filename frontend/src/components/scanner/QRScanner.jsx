@@ -453,7 +453,8 @@ const QRScanner = () => {
    * 1-Click Test Simulator for sample products
    */
   const handleSimulateScan = (product) => {
-    processScannedCode(`http://localhost:5173/product/${product._id}`);
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://nutriheal-bakes.vercel.app';
+    processScannedCode(`${origin}/product/${product._id}`);
   };
 
   // Mount effect: Start camera

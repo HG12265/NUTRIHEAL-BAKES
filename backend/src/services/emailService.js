@@ -11,7 +11,7 @@ const getEmailConfig = () => {
     senderEmail: process.env.BREVO_SENDER_EMAIL || 'nutrihealbakes@gmail.com',
     senderName: process.env.BREVO_SENDER_NAME || 'NutriHeal Bakes',
     adminEmail: process.env.ADMIN_NOTIFICATION_EMAIL || 'nutrihealbakes@gmail.com',
-    clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
+    clientUrl: process.env.CLIENT_URL || 'https://nutriheal-bakes.vercel.app',
   };
 };
 
