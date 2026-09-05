@@ -1,5 +1,14 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
+const dns = require('dns');
+
+// Configure reliable DNS servers for MongoDB Atlas SRV record resolution
+try {
+  dns.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1']);
+} catch (dnsErr) {
+  // Ignore in restricted environments
+}
+
 const User = require('./models/User');
 const Product = require('./models/Product');
 const slugify = require('./utils/slugify');
@@ -7,8 +16,10 @@ const { generateQRCodeDataUrl } = require('./utils/qrGenerator');
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/nutriheal_bakes');
-    console.log('[Seed] Connected to MongoDB');
+    await mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/nutriheal_bakes', {
+      serverSelectionTimeoutMS: 10000,
+    });
+    console.log('[Seed] Connected to MongoDB Atlas');
   } catch (error) {
     console.error(`[Seed] DB Connection Error: ${error.message}`);
     process.exit(1);
