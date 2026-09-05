@@ -82,12 +82,54 @@ const Register = () => {
         }}
       >
         <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-          <Link to="/" style={{ display: 'inline-block', marginBottom: '16px' }}>
+          <Link
+            to="/"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '12px',
+              textDecoration: 'none',
+              marginBottom: '20px',
+            }}
+          >
             <img
-              src="/logo-horizontal.png"
+              src="/logo.png"
               alt="NutriHeal Bakes"
-              style={{ height: '48px', width: 'auto', objectFit: 'contain' }}
+              style={{
+                height: '54px',
+                width: '54px',
+                borderRadius: '50%',
+                objectFit: 'contain',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+              }}
             />
+            <div style={{ textAlign: 'left', lineHeight: 1.15 }}>
+              <span
+                style={{
+                  fontSize: '1.25rem',
+                  fontWeight: 900,
+                  color: 'var(--primary-dark)',
+                  letterSpacing: '0.03em',
+                  display: 'block',
+                  fontFamily: 'var(--font-heading)',
+                }}
+              >
+                NUTRIHEAL BAKES
+              </span>
+              <span
+                style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 700,
+                  color: 'var(--accent-brown)',
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase',
+                  display: 'block',
+                  marginTop: '2px',
+                }}
+              >
+                Healthy Bakes • Smart Nutrition
+              </span>
+            </div>
           </Link>
           <h1 style={{ fontSize: '1.75rem', fontWeight: 800 }}>Create Account</h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '4px' }}>

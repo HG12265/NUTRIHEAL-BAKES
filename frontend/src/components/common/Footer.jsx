@@ -24,27 +24,56 @@ const Footer = () => {
         >
           {/* Brand Col */}
           <div>
-            <div style={{ marginBottom: '18px' }}>
+            <div style={{ marginBottom: '20px' }}>
               <div
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
+                  gap: '12px',
                   backgroundColor: '#FFFFFF',
                   padding: '8px 16px',
-                  borderRadius: '12px',
-                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.25)',
+                  borderRadius: '16px',
+                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.25)',
                 }}
               >
                 <img
-                  src="/logo-horizontal.png"
+                  src="/logo.png"
                   alt="NutriHeal Bakes"
                   style={{
-                    height: '42px',
-                    width: 'auto',
+                    height: '46px',
+                    width: '46px',
+                    borderRadius: '50%',
                     objectFit: 'contain',
                     display: 'block',
                   }}
                 />
+                <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.15 }}>
+                  <span
+                    style={{
+                      fontSize: '1.13rem',
+                      fontWeight: 900,
+                      color: 'black',
+                      letterSpacing: '0.02em',
+                      display: 'block',
+                      fontFamily: 'var(--font-heading)',
+                    }}
+                  >
+                    NUTRIHEAL BAKES
+                  </span>
+                  <span
+                    style={{
+                      fontSize: '0.68rem',
+                      fontWeight: 700,
+                      color: 'var(--accent-brown)',
+                      letterSpacing: '0.05em',
+                      textTransform: 'uppercase',
+                      display: 'block',
+                      marginTop: '2px',
+                    }}
+                  >
+                    Healthy Bakes • Smart Nutrition
+                  </span>
+                </div>
               </div>
             </div>
             <p

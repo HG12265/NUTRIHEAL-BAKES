@@ -45,31 +45,49 @@ const Navbar = () => {
           }}
           title="NutriHeal Bakes - Healthy Bakes • Smart Nutrition"
         >
-          {/* Diagram Design from Logo */}
+          {/* Official Brand Circular Logo */}
           <img
-            src="/logo-emblem.png"
-            alt="NutriHeal Bakes Emblem"
+            src="/logo.png"
+            alt="NutriHeal Bakes Logo"
             style={{
-              height: '48px',
-              width: 'auto',
+              height: '50px',
+              width: '50px',
+              borderRadius: '50%',
               objectFit: 'contain',
               display: 'block',
               flexShrink: 0,
+              boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
             }}
           />
 
           {/* NUTRIHEAL BAKES Text on the side */}
-          <img
-            src="/logo-text.png"
-            alt="NUTRIHEAL BAKES - Healthy Bakes • Smart Nutrition"
-            style={{
-              height: '32px',
-              width: 'auto',
-              maxWidth: '220px',
-              objectFit: 'contain',
-              display: 'block',
-            }}
-          />
+          <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.15 }}>
+            <span
+              style={{
+                fontSize: '1.28rem',
+                fontWeight: 900,
+                color: 'var(--primary-dark)',
+                letterSpacing: '0.03em',
+                display: 'block',
+                fontFamily: 'var(--font-heading)',
+              }}
+            >
+              NUTRIHEAL BAKES
+            </span>
+            <span
+              style={{
+                fontSize: '0.72rem',
+                fontWeight: 700,
+                color: 'var(--accent-brown)',
+                letterSpacing: '0.05em',
+                textTransform: 'uppercase',
+                display: 'block',
+                marginTop: '2px',
+              }}
+            >
+              Healthy Bakes • Smart Nutrition
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Navigation Links */}
