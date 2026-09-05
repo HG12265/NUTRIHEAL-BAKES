@@ -1,0 +1,21 @@
+{
+  "name": "nutriheal-bakes-root",
+  "version": "1.0.0",
+  "description": "NUTRIHEAL BAKES - Scan. Know. Choose. Order. Full-Stack Application",
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "seed": "npm --prefix backend run seed",
+    "seed:admin": "npm --prefix backend run seed:admin",
+    "build:frontend": "npm --prefix frontend run build"
+  },
+  "keywords": [
+    "nutriheal-bakes",
+    "qr-code",
+    "healthy-bakery",
+    "react",
+    "express",
+    "mongodb"
+  ],
+  "author": "NutriHeal Bakes Team"
+}
