@@ -1,5 +1,7 @@
 const Order = require('../models/Order');
 const Product = require('../models/Product');
+const Notification = require('../models/Notification');
+const notificationEmitter = require('../utils/notificationEmitter');
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -75,6 +77,29 @@ exports.createOrder = async (req, res, next) => {
       totalAmount,
       status: 'Pending',
     });
+
+    // Create persistent admin notification & emit real-time event
+    try {
+      const notification = await Notification.create({
+        recipientRole: 'admin',
+        type: 'NEW_ORDER',
+        title: 'New Order Received! 🛍️',
+        message: `${shippingAddress.fullName} placed an order for ₹${totalAmount} (${validatedItems.length} item${validatedItems.length > 1 ? 's' : ''})`,
+        order: order._id,
+        orderData: {
+          orderId: order._id,
+          customerName: shippingAddress.fullName,
+          totalAmount: order.totalAmount,
+          itemsCount: validatedItems.length,
+          status: order.status,
+        },
+        isRead: false,
+      });
+
+      notificationEmitter.emit('admin_notification', notification);
+    } catch (notifErr) {
+      console.error('[OrderController] Failed to dispatch admin notification:', notifErr.message);
+    }
 
     return res.status(201).json({
       success: true,

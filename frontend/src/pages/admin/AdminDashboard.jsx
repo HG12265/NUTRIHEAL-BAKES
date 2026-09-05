@@ -13,14 +13,17 @@ import {
 } from 'lucide-react';
 import api from '../../services/api';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
+import { useAdminNotification } from '../../context/AdminNotificationContext';
 
 const AdminDashboard = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { refreshTrigger } = useAdminNotification();
 
   useEffect(() => {
-    const fetchDashboardStats = async () => {
+    const fetchDashboardStats = async (isSilent = false) => {
       try {
+        if (!isSilent) setLoading(true);
         const res = await api.get('/admin/dashboard');
         if (res.data.success) {
           setData(res.data.data);
@@ -28,12 +31,12 @@ const AdminDashboard = () => {
       } catch (err) {
         console.error('Failed to load admin stats:', err);
       } finally {
-        setLoading(false);
+        if (!isSilent) setLoading(false);
       }
     };
 
-    fetchDashboardStats();
-  }, []);
+    fetchDashboardStats(refreshTrigger > 0);
+  }, [refreshTrigger]);
 
   if (loading) {
     return <LoadingSpinner size={36} message="Loading dashboard statistics..." />;

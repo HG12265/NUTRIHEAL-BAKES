@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Package, Calendar, MapPin, Eye, CheckCircle2, Clock } from 'lucide-react';
 import api from '../../services/api';
 import { useToast } from '../../context/ToastContext';
+import { useAdminNotification } from '../../context/AdminNotificationContext';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 
 const statuses = [
@@ -21,9 +22,10 @@ const AdminOrders = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
 
   const { addToast } = useToast();
+  const { refreshTrigger } = useAdminNotification();
 
-  const fetchOrders = async () => {
-    setLoading(true);
+  const fetchOrders = async (isSilent = false) => {
+    if (!isSilent) setLoading(true);
     try {
       const params = {};
       if (statusFilter && statusFilter !== 'All') {
@@ -34,15 +36,22 @@ const AdminOrders = () => {
         setOrders(res.data.data);
       }
     } catch (err) {
-      addToast('Failed to load orders', 'error');
+      if (!isSilent) addToast('Failed to load orders', 'error');
     } finally {
-      setLoading(false);
+      if (!isSilent) setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchOrders();
+    fetchOrders(false);
   }, [statusFilter]);
+
+  // Silently re-fetch when new orders arrive via real-time notification
+  useEffect(() => {
+    if (refreshTrigger > 0) {
+      fetchOrders(true);
+    }
+  }, [refreshTrigger]);
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
